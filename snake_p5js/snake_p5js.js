@@ -19,7 +19,7 @@ function setup() {
   d = createVector(0, 1);
   l = createVector(-1, 0);
   r = createVector(-1, 0);
-
+  
   tail.push(pos);
   for (i = 1; i < len; i++) {
     tail.push(createVector(pos.x, pos.y+(1*i)));
@@ -37,22 +37,24 @@ function draw() {
     }
   }
 
-  tail[0].add(u);
+  tail.splice(0,0,tail[0].copy().add(u));
   //console.log(pos.y)
+  tail.splice(tail.length-1,1);
 
-  if (pos.x < 0) {
-    pos.x = tiles - 1;
-  } else if (pos.y < 0) {
-    pos.y = tiles - 1;
-  } else if (pos.x > tiles - 1) {
-    pos.x = 0;
-  } else if (pos.y > tiles - 1) {
-    pos.y = 0;
+  if (tail[0].x < 0) {
+    tail[0].x = tiles - 1;
+  } else if (tail[0].y < 0) {
+    tail[0].y = tiles - 1;
+  } else if (tail[0].x > tiles - 1) {
+    tail[0].x = 0;
+  } else if (tail[0].y > tiles - 1) {
+    tail[0].y = 0;
   }
-
+  
   //console.log(pos.y)
   fill(0, 255, 0);
-  for (i=0; i<tail.length; i++) {
+  for (i=0; i<tail.length; i++){
     rect(tail[i].x * w, tail[i].y * w, w, w);
   }
+  
 }
