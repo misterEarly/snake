@@ -1,79 +1,82 @@
-let tiles;
-let w;
-let pos;
-let tail;
-let u, d, l, r;
-let dir;
-let fruit;
+int tiles;
+int w;
+PVector pos;
+PVector[] tail = new PVector[5];
+PVector u, d, l, r;
+PVector dir;
+PVector fruit;
 
-function reset() {
+void reset() {
   keyCode = 0;
-  tail = [];
-  pos = createVector(7, 7);
 
-  tail.push(pos);
-  for (i = 1; i < 5; i++) {
-    tail.push(createVector(pos.x, pos.y + 1 * i));
+  pos = new PVector(7, 7);
+
+  append(tail, pos);
+  for (int i = 1; i < 5; i++) {
+    append(tail, new PVector(pos.x, pos.y + 1 * i));
   }
   dir = u;
-  fruit = createVector(floor(random(tiles)), floor(random(tiles)));
+  fruit = new PVector(floor(random(tiles)), floor(random(tiles)));
 }
 
-function keyPressed() {
-
-  if (keyIsDown(LEFT_ARROW)) {
-    dir = l;
-    keyCode = 0;
-  } else if (keyIsDown(RIGHT_ARROW)) {
-    dir = r;
-    keyCode = 0;
-  } else if (keyIsDown(UP_ARROW)) {
-    dir = u;
-    keyCode = 0;
-  } else if (keyIsDown(DOWN_ARROW)) {
-    dir = d;
-    keyCode = 0;
+void keyPressed() {
+  if (keyPressed) {
+    if (keyCode == LEFT) {
+      dir = l;
+      keyCode = 0;
+    } else if (keyCode == RIGHT) {
+      dir = r;
+      keyCode = 0;
+    } else if (keyCode == UP) {
+      dir = u;
+      keyCode = 0;
+    } else if (keyCode == DOWN) {
+      dir = d;
+      keyCode = 0;
+    }
   }
 }
 
-function setup() {
+void setup() {
   frameRate(5);
   tiles = 15;
   w = 40;
-  createCanvas(tiles * w + 1, tiles * w + 1);
+  //int x = tiles * w + 1;
+  //print(x);
+  size(601, 601);
 
-  u = createVector(0, -1);
-  d = createVector(0, 1);
-  l = createVector(-1, 0);
-  r = createVector(1, 0);
+  u = new PVector(0, -1);
+  d = new PVector(0, 1);
+  l = new PVector(-1, 0);
+  r = new PVector(1, 0);
 
   reset();
 }
 
-function draw() {
+void draw() {
   background(255);
 
   fill(255);
   strokeWeight(2);
-  for (i = 0; i < tiles; i++) {
-    for (j = 0; j < tiles; j++) {
+  for (int i = 0; i < tiles; i++) {
+    for (int j = 0; j < tiles; j++) {
       rect(i * w, j * w, w, w);
     }
   }
 
   keyPressed();
 
-  tail.splice(0, 0, tail[0].copy().add(dir));
+  append(tail, tail[0].copy().add(dir));
   //console.log(pos.y)
 
   if (!(tail[0].x == fruit.x && tail[0].y == fruit.y)) {
-    tail.splice(tail.length - 1, 1);
+    shorten(tail);
   } else {
-    fruit = createVector(floor(random(tiles)), floor(random(tiles)));
+    fruit = new PVector(floor(random(tiles)), floor(random(tiles)));
   }
-  for (i = 1; i < tail.length; i++) {
+  for (int i = 1; i < tail.length; i++) {
     if (tail[0].x == tail[i].x && tail[0].y == tail[i].y) {
-      console.log("dead");
+     print("dead");
       reset();
     }
   }
@@ -92,7 +95,7 @@ function draw() {
   rect(fruit.x * w, fruit.y * w, w, w);
   //console.log(pos.y)
   fill(0, 0, 255);
-  for (i = 0; i < tail.length; i++) {
+  for (int i = 0; i < tail.length; i++) {
     rect(tail[i].x * w, tail[i].y * w, w, w);
   }
 }
