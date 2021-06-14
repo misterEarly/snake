@@ -9,6 +9,11 @@ PVector fruit;
 void reset() {
   keyCode = 0;
 
+  for (int i = tail.length; i > 0; i--) {
+    tail = (PVector[])shorten(tail);
+  } 
+  tail = (PVector[])expand(tail, 5);
+
   tail[0] = new PVector(7, 7);
 
 
@@ -69,8 +74,8 @@ void draw() {
   expand(tail, 1);
   //tail[tail.length - 1] = tail[0].copy().add(dir);
   //print(tail,"xxx");
-   tail = (PVector[])splice(tail, tail[0].copy().add(dir),0);
-   
+  tail = (PVector[])splice(tail, tail[0].copy().add(dir), 0);
+
   //console.log(pos.y)
 
   if (!(tail[0].x == fruit.x && tail[0].y == fruit.y)) {
