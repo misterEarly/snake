@@ -2,18 +2,33 @@ let tiles;
 let w;
 let pos;
 let tail;
+let len;
+let u, d, l, r;
 
 function setup() {
+  frameRate(2);
   tiles = 15;
   w = 40;
   createCanvas(tiles * w + 1, tiles * w + 1);
 
   pos = createVector(7, 7);
   tail = [];
+  len = 5;
+
+  u = createVector(0, -1);
+  d = createVector(0, 1);
+  l = createVector(-1, 0);
+  r = createVector(-1, 0);
+
+  tail.push(pos);
+  for (i = 1; i < len; i++) {
+    tail.push(createVector(pos.x, pos.y+(1*i)));
+  }
 }
 
 function draw() {
   background(255);
+
   fill(255);
   strokeWeight(2);
   for (i = 0; i < tiles; i++) {
@@ -21,6 +36,23 @@ function draw() {
       rect(i * w, j * w, w, w);
     }
   }
+
+  tail[0].add(u);
+  //console.log(pos.y)
+
+  if (pos.x < 0) {
+    pos.x = tiles - 1;
+  } else if (pos.y < 0) {
+    pos.y = tiles - 1;
+  } else if (pos.x > tiles - 1) {
+    pos.x = 0;
+  } else if (pos.y > tiles - 1) {
+    pos.y = 0;
+  }
+
+  //console.log(pos.y)
   fill(0, 255, 0);
-  rect(pos.x*w, pos.y*w, w, w);
+  for (i=0; i<tail.length; i++) {
+    rect(tail[i].x * w, tail[i].y * w, w, w);
+  }
 }
