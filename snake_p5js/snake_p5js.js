@@ -5,6 +5,7 @@ let tail;
 let len;
 let u, d, l, r;
 let dir;
+let fruit;
 
 function setup() {
   frameRate(5);
@@ -26,6 +27,8 @@ function setup() {
     tail.push(createVector(pos.x, pos.y+(1*i)));
   }
   dir = u;
+
+  fruit = createVector(floor(random(tiles)), floor(random(tiles)));
 }
 
 function keyPressed() {
@@ -55,7 +58,13 @@ function draw() {
 
   tail.splice(0, 0, tail[0].copy().add(dir));
   //console.log(pos.y)
-  tail.splice(tail.length-1, 1);
+
+  if (!(tail[0].x == fruit.x && tail[0].y == fruit.y)) {
+    tail.splice(tail.length-1, 1);
+  } else {
+    fruit = createVector(floor(random(tiles)), floor(random(tiles)));
+  }
+
 
 
   if (tail[0].x < 0) {
@@ -68,6 +77,9 @@ function draw() {
     tail[0].y = 0;
   }
 
+
+  fill(80, 255, 0);
+  rect(fruit.x * w, fruit.y*w, w, w)
   //console.log(pos.y)
   fill(0, 0, 255);
   for (i=0; i<tail.length; i++) {
