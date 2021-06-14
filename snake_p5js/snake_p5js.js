@@ -13,22 +13,13 @@ function setup() {
   w = 40;
   createCanvas(tiles * w + 1, tiles * w + 1);
 
-  pos = createVector(7, 7);
-  tail = [];
-  len = 5;
 
   u = createVector(0, -1);
   d = createVector(0, 1);
   l = createVector(-1, 0);
   r = createVector(1, 0);
 
-  tail.push(pos);
-  for (i = 1; i < len; i++) {
-    tail.push(createVector(pos.x, pos.y+(1*i)));
-  }
-  dir = u;
-
-  fruit = createVector(floor(random(tiles)), floor(random(tiles)));
+  reset();
 }
 
 function keyPressed() {
@@ -41,6 +32,18 @@ function keyPressed() {
   } else if (keyCode === DOWN_ARROW) {
     dir = d;
   }
+}
+
+function reset() {
+  tail = [];
+  pos = createVector(7, 7);
+  len = 5;
+  tail.push(pos);
+  for (i = 1; i < len; i++) {
+    tail.push(createVector(pos.x, pos.y+(1*i)));
+  }
+  dir = u;
+  fruit = createVector(floor(random(tiles)), floor(random(tiles)));
 }
 
 function draw() {
@@ -64,6 +67,12 @@ function draw() {
   } else {
     fruit = createVector(floor(random(tiles)), floor(random(tiles)));
   }
+  for (i = 1; i<tail.length; i++) {
+    if (tail[0].x==tail[i].x && tail[0].y==tail[i].y) {
+      console.log('dead');
+      reset();
+    }
+  }
 
 
 
@@ -80,8 +89,8 @@ function draw() {
 
   fill(80, 255, 0);
   rect(fruit.x * w, fruit.y*w, w, w)
-  //console.log(pos.y)
-  fill(0, 0, 255);
+    //console.log(pos.y)
+    fill(0, 0, 255);
   for (i=0; i<tail.length; i++) {
     rect(tail[i].x * w, tail[i].y * w, w, w);
   }
