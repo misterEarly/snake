@@ -4,9 +4,10 @@ let pos;
 let tail;
 let len;
 let u, d, l, r;
+let dir;
 
 function setup() {
-  frameRate(2);
+  frameRate(5);
   tiles = 15;
   w = 40;
   createCanvas(tiles * w + 1, tiles * w + 1);
@@ -18,11 +19,24 @@ function setup() {
   u = createVector(0, -1);
   d = createVector(0, 1);
   l = createVector(-1, 0);
-  r = createVector(-1, 0);
-  
+  r = createVector(1, 0);
+
   tail.push(pos);
   for (i = 1; i < len; i++) {
     tail.push(createVector(pos.x, pos.y+(1*i)));
+  }
+  dir = u;
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    dir = l;
+  } else if (keyCode === RIGHT_ARROW) {
+    dir = r;
+  } else if (keyCode === UP_ARROW) {
+    dir = u;
+  } else if (keyCode === DOWN_ARROW) {
+    dir = d;
   }
 }
 
@@ -37,9 +51,12 @@ function draw() {
     }
   }
 
-  tail.splice(0,0,tail[0].copy().add(u));
+  keyPressed();
+
+  tail.splice(0, 0, tail[0].copy().add(dir));
   //console.log(pos.y)
-  tail.splice(tail.length-1,1);
+  tail.splice(tail.length-1, 1);
+
 
   if (tail[0].x < 0) {
     tail[0].x = tiles - 1;
@@ -50,11 +67,10 @@ function draw() {
   } else if (tail[0].y > tiles - 1) {
     tail[0].y = 0;
   }
-  
+
   //console.log(pos.y)
-  fill(0, 255, 0);
-  for (i=0; i<tail.length; i++){
+  fill(0, 0, 255);
+  for (i=0; i<tail.length; i++) {
     rect(tail[i].x * w, tail[i].y * w, w, w);
   }
-  
 }
