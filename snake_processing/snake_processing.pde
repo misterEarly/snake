@@ -1,6 +1,6 @@
 int tiles;
 int w;
-PVector pos;
+
 PVector[] tail = new PVector[5];
 PVector u, d, l, r;
 PVector dir;
@@ -9,12 +9,13 @@ PVector fruit;
 void reset() {
   keyCode = 0;
 
-  pos = new PVector(7, 7);
+  tail[0] = new PVector(7, 7);
 
-  append(tail, pos);
+
   for (int i = 1; i < 5; i++) {
-    append(tail, new PVector(pos.x, pos.y + 1 * i));
+    tail[i] = new PVector(tail[0].x, tail[0].y + 1 * i);
   }
+
   dir = u;
   fruit = new PVector(floor(random(tiles)), floor(random(tiles)));
 }
@@ -40,10 +41,10 @@ void keyPressed() {
 void setup() {
   frameRate(5);
   tiles = 15;
-  w = 40;
+  w = 100;
   //int x = tiles * w + 1;
   //print(x);
-  size(601, 601);
+  size(1501, 1501);
 
   u = new PVector(0, -1);
   d = new PVector(0, 1);
@@ -65,18 +66,21 @@ void draw() {
   }
 
   keyPressed();
-
-  append(tail, tail[0].copy().add(dir));
+  expand(tail, 1);
+  //tail[tail.length - 1] = tail[0].copy().add(dir);
+  //print(tail,"xxx");
+   tail = (PVector[])splice(tail, tail[0].copy().add(dir),0);
+   
   //console.log(pos.y)
 
   if (!(tail[0].x == fruit.x && tail[0].y == fruit.y)) {
-    shorten(tail);
+    tail = (PVector[])shorten(tail);
   } else {
     fruit = new PVector(floor(random(tiles)), floor(random(tiles)));
   }
   for (int i = 1; i < tail.length; i++) {
     if (tail[0].x == tail[i].x && tail[0].y == tail[i].y) {
-     print("dead");
+      print("dead");
       reset();
     }
   }
