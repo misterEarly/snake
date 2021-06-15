@@ -57,8 +57,8 @@ while active:
     screen.fill("white")
     for i in range(tiles):
         for j in range(tiles):
-            # canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w, fill="white")
-            pygame.draw.rect(screen, "white", [i * w, i * w, w, w])
+            pygame.draw.rect(screen, "black", [i * w, j * w, w, w], 1)
+
     tail.insert(0, tail[0] + direct)
     # print(tail)
     if not (tail[0][0] == fruit[0] and tail[0][1] == fruit[1]):
@@ -68,7 +68,7 @@ while active:
 
     for i in range(1, len(tail)):
         if tail[0][0] == tail[i][0] and tail[0][1] == tail[i][1]:
-            # print("dead")
+            print("dead")
             reset()
 
     if tail[0][0] < 0:
@@ -82,10 +82,11 @@ while active:
 
     # canvas.create_rectangle(fruit[0] * w, fruit[1] * w, fruit[0] * w + w, fruit[1] * w + w, fill="lime")
     pygame.draw.rect(screen, "green", [fruit[0] * w, fruit[1] * w, w, w])
-
+    pygame.draw.rect(screen, "black", [fruit[0] * w, fruit[1] * w, w, w],1)
     for i in range(len(tail)):
-        # canvas.create_rectangle(tail[i][0] * w, tail[i][1] * w, tail[i][0] * w + w, tail[i][1] * w + w, fill="blue")
         pygame.draw.rect(screen, "blue", [tail[i][0] * w, tail[i][1] * w, w, w])
+        pygame.draw.rect(screen, "black", [tail[i][0] * w, tail[i][1] * w, w, w],1)
+
     pygame.display.flip()
     clock.tick(5)
 
