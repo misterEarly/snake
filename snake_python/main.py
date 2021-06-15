@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import tkinter
+from time import sleep
 
 tiles = 15
 w = 40
@@ -24,7 +25,7 @@ def reset():
         # print(val)
         tail.append(val)
         # print(tail)
-    direct = u;
+    direct = u
     fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
 
@@ -51,27 +52,28 @@ def reset():
 reset()
 
 while 1:
+    # global fruit
     # background(255);
 
     # fill(255);
     # strokeWeight(2);
     for i in range(tiles):
         for j in range(tiles):
-            canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w)
+            canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w, fill="white")
 
     # keyPressed();
 
-    np.insert(tail, 0, tail[0] + direct)
-
+    tail.insert(0, tail[0] + direct)
+    # print(tail)
     if not (tail[0][0] == fruit[0] and tail[0][1] == fruit[1]):
         del tail[-1]
     else:
         fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
-    for i in range(len(tail)):
+    for i in range(1, len(tail)):
         if tail[0][0] == tail[i][0] and tail[0][1] == tail[i][1]:
-            print("dead");
-            reset();
+            # print("dead")
+            reset()
 
     if tail[0][0] < 0:
         tail[0][0] = tiles - 1
@@ -91,4 +93,5 @@ while 1:
         canvas.create_rectangle(tail[i][0] * w, tail[i][1] * w, tail[i][0] * w + w, tail[i][1] * w + w, fill="blue")
 
     canvas.pack()
-    main.mainloop()
+    canvas.update()
+    sleep(0.2)
