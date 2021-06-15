@@ -9,9 +9,9 @@ w = 40
 pos = np.array([7, 7])
 tail = []
 u = np.array([0, -1])
-d = np.array([0, -1])
-l = np.array([0, -1])
-r = np.array([0, -1])
+d = np.array([0, 1])
+l = np.array([-1, 0])
+r = np.array([1, 0])
 direct = u
 fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
@@ -24,6 +24,7 @@ clock = pygame.time.Clock()
 
 def reset():
     global tail, direct, fruit
+    tail = []
     for x in range(5):
         val = np.array([7, 7 + 1 * x])
         # print(val)
@@ -38,7 +39,9 @@ def reset():
 
 reset()
 active = True
+
 while active:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
 
@@ -60,7 +63,7 @@ while active:
             pygame.draw.rect(screen, "black", [i * w, j * w, w, w], 1)
 
     tail.insert(0, tail[0] + direct)
-    # print(tail)
+    print(tail)
     if not (tail[0][0] == fruit[0] and tail[0][1] == fruit[1]):
         del tail[-1]
     else:
@@ -70,6 +73,7 @@ while active:
         if tail[0][0] == tail[i][0] and tail[0][1] == tail[i][1]:
             print("dead")
             reset()
+            continue
 
     if tail[0][0] < 0:
         tail[0][0] = tiles - 1
@@ -82,10 +86,11 @@ while active:
 
     # canvas.create_rectangle(fruit[0] * w, fruit[1] * w, fruit[0] * w + w, fruit[1] * w + w, fill="lime")
     pygame.draw.rect(screen, "green", [fruit[0] * w, fruit[1] * w, w, w])
-    pygame.draw.rect(screen, "black", [fruit[0] * w, fruit[1] * w, w, w],1)
+    pygame.draw.rect(screen, "black", [fruit[0] * w, fruit[1] * w, w, w], 1)
+
     for i in range(len(tail)):
         pygame.draw.rect(screen, "blue", [tail[i][0] * w, tail[i][1] * w, w, w])
-        pygame.draw.rect(screen, "black", [tail[i][0] * w, tail[i][1] * w, w, w],1)
+        pygame.draw.rect(screen, "black", [tail[i][0] * w, tail[i][1] * w, w, w], 1)
 
     pygame.display.flip()
     clock.tick(5)
