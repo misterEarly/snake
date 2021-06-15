@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import tkinter
 
 tiles = 15
 w = 40
@@ -12,57 +13,62 @@ r = np.array([0, -1])
 direct = u
 fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
+main = tkinter.Tk()
+canvas = tkinter.Canvas(main, bg="white", height=tiles * w, width=tiles * w)
+
 
 def reset():
-    for i in range(5):
-        tail.append(np.array([7, 7 + 1 * i]))
-
+    global tail, direct, fruit
+    for x in range(5):
+        val = np.array([7, 7 + 1 * x])
+        # print(val)
+        tail.append(val)
+        # print(tail)
     direct = u;
     fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
+#
+# def keyPressed():
+#     if (keyIsDown(LEFT_ARROW)):
+#
+#         dir = l;
+#         keyCode = 0;
+#     elif (keyIsDown(RIGHT_ARROW)):
+#         dir = r;
+#         keyCode = 0;
+#     elif (keyIsDown(UP_ARROW)):
+#         dir = u;
+#         keyCode = 0;
+#     elif (keyIsDown(DOWN_ARROW)):
+#         dir = d;
+#         keyCode = 0;
 
-def keyPressed():
-    if (keyIsDown(LEFT_ARROW)):
 
-        dir = l;
-        keyCode = 0;
-    else if (keyIsDown(RIGHT_ARROW)):
-        dir = r;
-        keyCode = 0;
-    else if (keyIsDown(UP_ARROW)):
-        dir = u;
-        keyCode = 0;
-    else if (keyIsDown(DOWN_ARROW)):
-        dir = d;
-        keyCode = 0;
+# frameRate(5);
 
-
-frameRate(5);
-createCanvas(tiles * w + 1, tiles * w + 1);
 
 reset()
 
 while 1:
-    background(255);
+    # background(255);
 
-    fill(255);
-    strokeWeight(2);
+    # fill(255);
+    # strokeWeight(2);
     for i in range(tiles):
         for j in range(tiles):
-            rect(i * w, j * w, w, w);
+            canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w)
 
-    keyPressed();
+    #keyPressed();
 
-    tail.splice(0, 0, tail[0].copy().add(dir));
-    // console.log(pos.y)
+    np.insert(tail, 0, tail[0] + direct)
 
-    if (!(tail[0].x == fruit.x & & tail[0].y == fruit.y)):
-        tail.splice(tail.length - 1, 1);
+    if not (tail[0][0] == fruit[0] and tail[0][1] == fruit[1]):
+        del tail[-1]
     else:
-        fruit = createVector(floor(random(tiles)), floor(random(tiles)));
+        fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
-    for i in range(tail.length):
-        if (tail[0].x == tail[i].x) & & (tail[0].y == tail[i].y):
+    for i in range(len(tail)):
+        if tail[0][0] == tail[i][0] and tail[0][1] == tail[i][1]:
             print("dead");
             reset();
 
@@ -75,10 +81,12 @@ while 1:
     elif tail[0][1] > tiles - 1:
         tail[0][1] = 0
 
-    fill(80, 255, 0);
-    rect(fruit.x * w, fruit.y * w, w, w);
+    # fill(80, 255, 0);
+    # rect(fruit.x * w, fruit.y * w, w, w);
 
-    fill(0, 0, 255);
-    for i in range(tail.length):
-        rect(tail[i].x * w, tail[i].y * w, w, w)
+    # fill(0, 0, 255);
+    # for i in range(tail.length):
+    # rect(tail[i].x * w, tail[i].y * w, w, w)
 
+    canvas.pack()
+    main.mainloop()
