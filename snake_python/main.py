@@ -2,6 +2,7 @@ import numpy as np
 import random
 import tkinter
 from time import sleep
+import keyboard as kb
 
 tiles = 15
 w = 40
@@ -29,23 +30,6 @@ def reset():
     fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
 
-#
-# def keyPressed():
-#     if (keyIsDown(LEFT_ARROW)):
-#
-#         dir = l;
-#         keyCode = 0;
-#     elif (keyIsDown(RIGHT_ARROW)):
-#         dir = r;
-#         keyCode = 0;
-#     elif (keyIsDown(UP_ARROW)):
-#         dir = u;
-#         keyCode = 0;
-#     elif (keyIsDown(DOWN_ARROW)):
-#         dir = d;
-#         keyCode = 0;
-
-
 # frameRate(5);
 
 
@@ -61,7 +45,15 @@ while 1:
         for j in range(tiles):
             canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w, fill="white")
 
-    # keyPressed();
+    if kb.is_pressed(37):
+        print("left")
+        direct = l
+    elif kb.is_pressed(39):
+        direct = r
+    elif kb.is_pressed(38):
+        direct = u
+    elif kb.is_pressed(40):
+        direct = d
 
     tail.insert(0, tail[0] + direct)
     # print(tail)
@@ -95,3 +87,4 @@ while 1:
     canvas.pack()
     canvas.update()
     sleep(0.2)
+    canvas.clear
