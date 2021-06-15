@@ -1,6 +1,6 @@
 import numpy as np
 import random
-import tkinter
+import pygame
 from time import sleep
 import keyboard as kb
 
@@ -15,8 +15,11 @@ r = np.array([0, -1])
 direct = u
 fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
-main = tkinter.Tk()
-canvas = tkinter.Canvas(main, bg="white", height=tiles * w, width=tiles * w)
+pygame.init()
+screen = pygame.display.set_mode((w * tiles, w * tiles))
+pygame.display.set_caption("Snake in Python!")
+
+clock = pygame.time.Clock()
 
 
 def reset():
@@ -34,27 +37,28 @@ def reset():
 
 
 reset()
+active = True
+while active:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
 
-while 1:
-    # global fruit
-    # background(255);
+            active = False
 
-    # fill(255);
-    # strokeWeight(2);
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                direct = r
+            elif event.key == pygame.K_LEFT:
+                direct = l
+            elif event.key == pygame.K_UP:
+                direct = u
+            elif event.key == pygame.K_DOWN:
+                direct = d
+
+    screen.fill("white")
     for i in range(tiles):
         for j in range(tiles):
-            canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w, fill="white")
-
-    if kb.is_pressed(37):
-        print("left")
-        direct = l
-    elif kb.is_pressed(39):
-        direct = r
-    elif kb.is_pressed(38):
-        direct = u
-    elif kb.is_pressed(40):
-        direct = d
-
+            # canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w, fill="white")
+            pygame.draw.rect(screen, "white", [i * w, i * w, w, w])
     tail.insert(0, tail[0] + direct)
     # print(tail)
     if not (tail[0][0] == fruit[0] and tail[0][1] == fruit[1]):
@@ -76,15 +80,13 @@ while 1:
     elif tail[0][1] > tiles - 1:
         tail[0][1] = 0
 
-    # fill(80, 255, 0);
-    # rect(fruit.x * w, fruit.y * w, w, w);
-    canvas.create_rectangle(fruit[0] * w, fruit[1] * w, fruit[0] * w + w, fruit[1] * w + w, fill="lime")
+    # canvas.create_rectangle(fruit[0] * w, fruit[1] * w, fruit[0] * w + w, fruit[1] * w + w, fill="lime")
+    pygame.draw.rect(screen, "green", [fruit[0] * w, fruit[1] * w, w, w])
 
-    # fill(0, 0, 255);
     for i in range(len(tail)):
-        canvas.create_rectangle(tail[i][0] * w, tail[i][1] * w, tail[i][0] * w + w, tail[i][1] * w + w, fill="blue")
+        # canvas.create_rectangle(tail[i][0] * w, tail[i][1] * w, tail[i][0] * w + w, tail[i][1] * w + w, fill="blue")
+        pygame.draw.rect(screen, "blue", [tail[i][0] * w, tail[i][1] * w, w, w])
+    pygame.display.flip()
+    clock.tick(5)
 
-    canvas.pack()
-    canvas.update()
-    sleep(0.2)
-    canvas.clear
+pygame.quit()
