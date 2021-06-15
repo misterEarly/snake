@@ -27,6 +27,7 @@ def reset():
     direct = u;
     fruit = np.array([random.randrange(0, tiles), random.randrange(0, tiles)])
 
+
 #
 # def keyPressed():
 #     if (keyIsDown(LEFT_ARROW)):
@@ -58,7 +59,7 @@ while 1:
         for j in range(tiles):
             canvas.create_rectangle(i * w, j * w, i * w + w, j * w + w)
 
-    #keyPressed();
+    # keyPressed();
 
     np.insert(tail, 0, tail[0] + direct)
 
@@ -83,10 +84,11 @@ while 1:
 
     # fill(80, 255, 0);
     # rect(fruit.x * w, fruit.y * w, w, w);
+    canvas.create_rectangle(fruit[0] * w, fruit[1] * w, fruit[0] * w + w, fruit[1] * w + w, fill="lime")
 
     # fill(0, 0, 255);
-    # for i in range(tail.length):
-    # rect(tail[i].x * w, tail[i].y * w, w, w)
+    for i in range(len(tail)):
+        canvas.create_rectangle(tail[i][0] * w, tail[i][1] * w, tail[i][0] * w + w, tail[i][1] * w + w, fill="blue")
 
     canvas.pack()
     main.mainloop()
